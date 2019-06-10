@@ -159,13 +159,13 @@ class ResourceSwaggerMapping(object):
 
     def build_parameters_from_ordering(self):
         values = []
-        [values.extend([field,"-%s"%field]) for field in self.schema['ordering']]
+        [values.extend([field, "-%s" % field]) for field in self.schema['ordering']]
         return {
             'paramType': "query",
             'name': "order_by",
             'dataType': "String",
             'required': False,
-            'description': unicode("Orders the result set based on the selection. "
+            'description': str("Orders the result set based on the selection. "
                                    "Ascending order by default, prepending the '-' "
                                    "sign change the sorting order to descending"),
             'allowableValues': {
@@ -212,12 +212,7 @@ class ResourceSwaggerMapping(object):
                             #This code has been mostly sucked from the tastypie lib
                             if getattr(self.resource._meta, 'queryset', None) is not None:
                                 # Get the possible query terms from the current QuerySet.
-                                if hasattr(self.resource._meta.queryset.query.query_terms, 'keys'):
-                                    # Django 1.4 & below compatibility.
-                                    field = self.resource._meta.queryset.query.query_terms.keys()
-                                else:
-                                    # Django 1.5+.
-                                    field = self.resource._meta.queryset.query.query_terms
+                                field = QUERY_TERMS
                             else:
                                 if hasattr(QUERY_TERMS, 'keys'):
                                     # Django 1.4 & below compatibility.
